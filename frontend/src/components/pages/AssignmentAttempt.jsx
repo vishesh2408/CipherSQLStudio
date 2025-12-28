@@ -1,3 +1,4 @@
+import { toast } from 'react-hot-toast';
 import { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import api from '../services/api';
@@ -26,24 +27,17 @@ const AssignmentAttempt = () => {
 
                 // Fetch solved/previous code if user logged in
                 if (user) {
-                    console.log("User logged in, fetching progress for:", id);
                     const { data: progressData } = await api.get(`/progress?assignmentId=${id}`);
-                    console.log("Progress data received:", progressData);
-
                     if (progressData && progressData.length > 0) {
                         const savedProgress = progressData[0];
                         if (savedProgress.sqlQuery) {
-                            console.log("Setting saved code:", savedProgress.sqlQuery);
                             setCode(savedProgress.sqlQuery);
                         }
-                    } else {
-                        console.log("No saved progress found.");
                     }
-                } else {
-                    console.log("User not logged in, skipping progress.");
                 }
             } catch (err) {
                 console.error("Error loading data", err);
+                toast.error("Failed to load assignment data");
             }
         };
         fetchAssignmentAndProgress();
@@ -94,9 +88,17 @@ const AssignmentAttempt = () => {
             }
 
             const { data } = await api.post('/execute', { assignmentId: id, sqlQuery: code });
+
+            if (!data.success) {
+                // Toast SQL execution errors (syntax errors etc)
+                toast.error(data.error || "Query Execution Failed");
+            }
+
             // Run action: isSubmit is false
             setResult({ ...data, isSubmit: false });
         } catch (err) {
+            console.error(err);
+            toast.error("Network Error: Failed to execute query");
             setResult({ success: false, error: "Execution failed." });
         } finally {
             setExecuting(false);
@@ -112,6 +114,14 @@ const AssignmentAttempt = () => {
             const submitResult = { ...data, isSubmit: true };
             setResult(submitResult);
 
+            if (data.success && !submitResult.passed) {
+                toast.error(submitResult.feedback || "Incorrect Solution");
+            } else if (!data.success) {
+                toast.error(data.error || "Execution Failed");
+            } else if (submitResult.passed) {
+                toast.success("Correct Solution! 🎉");
+            }
+
             if (submitResult.passed) {
                 if (user) {
                     await api.post('/progress', {
@@ -122,6 +132,8 @@ const AssignmentAttempt = () => {
                 }
             }
         } catch (err) {
+            console.error(err);
+            toast.error("Network Error: Failed to submit solution");
             setResult({ success: false, error: "Execution failed." });
         } finally {
             setExecuting(false);
@@ -130,10 +142,21 @@ const AssignmentAttempt = () => {
 
     const handleGetHint = async () => {
         try {
+            const loadingToast = toast.loading("Asking AI Tutor...");
             const { data } = await api.post('/hint', { assignmentId: id, sqlQuery: code });
+            toast.dismiss(loadingToast);
             setHint(data.hint);
+
+            // If the hint is actually an error/fallback message
+            if (data.hint && (data.hint.includes("Limit Reached") || data.hint.includes("trouble connecting"))) {
+                toast.error("AI Service Unavailable", { duration: 4000 });
+            } else {
+                toast.success("Hint Received! 💡");
+            }
         } catch (err) {
+            toast.dismiss();
             console.error("Hint failed", err);
+            toast.error("Failed to get hint");
         }
     };
 

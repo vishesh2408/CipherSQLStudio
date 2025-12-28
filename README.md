@@ -64,8 +64,9 @@ Create a `.env` file in the `backend` folder with the following variables:
 ```env
 PORT=5000
 MONGO_URI=mongodb://localhost:27017/ciphersql
-PG_URI=postgres://postgres:password@localhost:5432/ciphersql_sandbox
+PG_URI=postgres://postgres:postgres@localhost:5432/ciphersql_sandbox
 JWT_SECRET=your_super_secret_key_here
+OPENAI_API_KEY=sk-your_openai_api_key_here  # Optional: Required for AI Hints
 ```
 > **Note**: Ensure your PostgreSQL server is running and the database (e.g., `ciphersql_sandbox`) exists.
 

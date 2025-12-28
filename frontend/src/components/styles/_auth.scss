@@ -1,5 +1,6 @@
 @use 'variables' as *;
 @use 'mixins' as *;
+@use 'sass:color';
 
 .auth-page {
     min-height: 100vh;
@@ -90,7 +91,7 @@
         }
 
         &:hover:not(:focus) {
-            border-color: lighten($color-border, 10%);
+            border-color: color.adjust($color-border, $lightness: 10%);
         }
     }
 
@@ -150,7 +151,7 @@
         transition: color 0.2s;
 
         &:hover {
-            color: lighten($color-primary, 10%);
+            color: color.adjust($color-primary, $lightness: 10%);
             text-decoration: underline;
         }
     }

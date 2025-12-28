@@ -5,9 +5,12 @@ import AssignmentAttempt from './components/pages/AssignmentAttempt';
 import Login from './components/pages/Login';
 import Signup from './components/pages/Signup';
 
+import { Toaster } from 'react-hot-toast';
+
 function App() {
   return (
     <AuthProvider>
+      <Toaster position="top-right" />
       <Router>
         <div className="app-shell">
           <Routes>

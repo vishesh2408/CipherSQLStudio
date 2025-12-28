@@ -38,6 +38,9 @@ exports.generateHint = async (question, sqlQuery, error, schema) => {
     return response.choices[0].message.content.trim();
   } catch (err) {
     console.error("LLM API Error:", err);
+    if (err.status === 429 || err.code === 'insufficient_quota') {
+        return "⚠️ AI Tutor Limit Reached. \nTip: Check your WHERE clause logic and ensure you are selecting the correct columns from the table schema.";
+    }
     return "I'm having trouble connecting to the AI tutor right now. Please check your syntax manually.";
   }
 };
