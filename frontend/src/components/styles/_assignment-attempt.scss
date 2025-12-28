@@ -1,0 +1,273 @@
+@use 'sass:color';
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.assignment-attempt {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-color: $color-bg;
+
+    .attempt-subheader {
+        flex-shrink: 0;
+        padding: $spacing-sm $spacing-lg;
+        background: $color-surface;
+        border-bottom: 1px solid $color-border;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        h1 {
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .actions {
+            display: flex;
+            gap: $spacing-sm;
+
+            button {
+                padding: 0.5rem 1rem;
+                border-radius: 6px;
+                border: none;
+                cursor: pointer;
+                font-weight: 500;
+                transition: opacity 0.2s;
+
+                &:disabled {
+                    opacity: 0.5;
+                    cursor: not-allowed;
+                }
+            }
+
+            .btn-primary {
+                background: $color-primary;
+                color: white;
+            }
+
+            .btn-secondary {
+                background: rgba(255, 255, 255, 0.1);
+                color: $color-text-main;
+            }
+        }
+    }
+
+    .workspace {
+        flex-grow: 1;
+        display: flex;
+        overflow: hidden;
+        flex-direction: column;
+
+        @include desktop {
+            flex-direction: row;
+        }
+    }
+
+    .left-panel {
+        width: 100%;
+
+        @include desktop {
+            width: 35%;
+            border-right: 1px solid $color-border;
+        }
+
+        display: flex;
+        flex-direction: column;
+        overflow-y: auto;
+        background: color.adjust($color-bg, $lightness: -2%);
+
+        .panel-section {
+            padding: $spacing-md;
+            border-bottom: 1px solid $color-border;
+
+            h3 {
+                font-size: 0.9rem;
+                text-transform: uppercase;
+                color: $color-text-muted;
+                margin-bottom: $spacing-sm;
+                letter-spacing: 0.05em;
+            }
+        }
+
+        .question-box p {
+            font-size: 1rem;
+            color: $color-text-main;
+        }
+
+        .hint-box {
+            background: rgba($color-accent, 0.1);
+            border-left: 4px solid $color-accent;
+        }
+
+        .expected-output-box {
+            .table-responsive {
+                overflow-x: auto;
+
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 0.85rem;
+
+                    th,
+                    td {
+                        padding: 0.5rem;
+                        border: 1px solid $color-border;
+                        text-align: left;
+                    }
+
+                    th {
+                        background: rgba(255, 255, 255, 0.05);
+                        color: $color-text-muted;
+                    }
+
+                    td {
+                        font-family: monospace;
+                        color: $color-text-main;
+                    }
+                }
+            }
+        }
+
+        .schema-box {
+            .table-schema {
+                margin-bottom: $spacing-lg;
+
+                p {
+                    margin-bottom: $spacing-xs;
+                    color: $color-text-muted;
+                }
+            }
+
+            .table-responsive {
+                overflow-x: auto;
+
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 0.85rem;
+
+                    th,
+                    td {
+                        padding: 0.5rem;
+                        border: 1px solid $color-border;
+                        text-align: left;
+                    }
+
+                    th {
+                        background: rgba(255, 255, 255, 0.05);
+                        color: $color-text-muted;
+                    }
+
+                    td {
+                        font-family: monospace;
+                        color: $color-text-main;
+                    }
+                }
+            }
+        }
+    }
+
+    .right-panel {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+
+        .editor-container {
+            flex: 1;
+            min-height: 300px;
+            border-bottom: 1px solid $color-border;
+        }
+
+        .results-container {
+            flex: 1;
+            overflow: auto;
+            padding: $spacing-md;
+            background: $color-bg;
+
+            h3 {
+                margin-bottom: $spacing-sm;
+                font-size: 1rem;
+            }
+
+            .table-wrapper {
+                overflow-x: auto;
+                display: flex;
+                flex-direction: column;
+                gap: $spacing-md;
+
+                .output-comparison {
+                    display: flex;
+                    flex-direction: column;
+                    gap: $spacing-lg;
+
+                    @include desktop {
+                        flex-direction: row;
+                        align-items: flex-start;
+                    }
+
+                    .actual-output,
+                    .expected-output {
+                        flex: 1;
+                        min-width: 0; // Fix flex overflow
+
+                        h4 {
+                            font-size: 0.9rem;
+                            color: $color-text-muted;
+                            margin-bottom: $spacing-xs;
+                            text-transform: uppercase;
+                            letter-spacing: 0.05em;
+                        }
+                    }
+                }
+
+                table {
+                    width: 100%;
+                    border-collapse: collapse;
+                    font-size: 0.85rem;
+
+                    th,
+                    td {
+                        text-align: left;
+                        padding: 0.5rem;
+                        border: 1px solid $color-border;
+                    }
+
+                    th {
+                        color: $color-text-muted;
+                        font-weight: 600;
+                        position: sticky;
+                        top: 0;
+                        background: rgba(255, 255, 255, 0.05);
+                    }
+
+                    td {
+                        font-family: monospace;
+                        color: $color-text-main;
+                    }
+                }
+
+                .meta {
+                    margin-top: $spacing-sm;
+                    font-size: 0.8rem;
+                    color: $color-text-muted;
+                    text-align: right;
+                }
+            }
+
+            .error-message {
+                color: $color-danger;
+                padding: $spacing-md;
+                background: rgba($color-danger, 0.1);
+                border-radius: 6px;
+            }
+
+            .placeholder {
+                color: $color-text-muted;
+                font-style: italic;
+                text-align: center;
+                margin-top: 2rem;
+            }
+        }
+    }
+}

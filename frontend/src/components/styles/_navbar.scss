@@ -1,0 +1,52 @@
+@use 'sass:color';
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.glass-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem $spacing-lg;
+    background: rgba($color-surface, 0.8);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid $color-border;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+
+    .nav-logo {
+        font-size: 1.25rem;
+        font-weight: 700;
+        color: $color-primary;
+        letter-spacing: -0.02em;
+
+        &:hover {
+            color: color.adjust($color-primary, $lightness: 10%);
+        }
+    }
+
+    .nav-links {
+        display: flex;
+        gap: $spacing-md;
+
+        a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: $color-text-muted;
+            padding: 0.5rem;
+            border-radius: 6px;
+            transition: all 0.2s;
+
+            &:hover,
+            &.active {
+                color: $color-text-main;
+                background: rgba(255, 255, 255, 0.05);
+            }
+
+            &.disabled {
+                opacity: 0.5;
+                cursor: not-allowed;
+            }
+        }
+    }
+}

@@ -1,0 +1,182 @@
+@use 'sass:color';
+@use 'variables' as *;
+@use 'mixins' as *;
+
+.dashboard-layout {
+    background-color: #1a1a1a;
+    min-height: 100vh;
+    padding-top: 0; // Navbar handles its own spacing if fixed, otherwise adjust
+}
+
+.dashboard-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    gap: $spacing-lg;
+    padding: $spacing-lg;
+
+    @include mobile {
+        flex-direction: column;
+    }
+}
+
+
+// Main Content
+.problem-list-content {
+    flex-grow: 1;
+    min-width: 0; // Fix flex child overflow issues
+
+    .topic-filters {
+        display: flex;
+        gap: $spacing-sm;
+        margin-bottom: $spacing-md;
+        overflow-x: auto;
+        padding-bottom: $spacing-xs;
+
+        .filter-chip {
+            background: #282828;
+            border: none;
+            color: $color-text-muted;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.2s;
+
+            &:hover {
+                background: #3e3e3e;
+            }
+
+            &.active {
+                background: white;
+                color: black;
+                font-weight: 600;
+            }
+        }
+    }
+
+    .search-bar-container {
+        margin-bottom: $spacing-md;
+
+        .search-input {
+            width: 100%;
+            padding: 0.8rem 1rem;
+            background: #282828;
+            border: 1px solid #3e3e3e;
+            border-radius: 8px;
+            color: $color-text-main;
+            font-size: 0.95rem;
+            transition: border-color 0.2s;
+
+            &:focus {
+                outline: none;
+                border-color: $color-primary;
+            }
+
+            &::placeholder {
+                color: $color-text-muted;
+            }
+        }
+    }
+
+    .list-header {
+        display: flex;
+        padding: 1rem;
+        border-bottom: 1px solid #3e3e3e;
+        color: $color-text-muted;
+        font-size: 0.9rem;
+        font-weight: 500;
+
+        .col-status {
+            width: 60px;
+        }
+
+        .col-title {
+            flex: 1;
+        }
+
+        .col-acceptance {
+            width: 120px;
+        }
+
+        .col-difficulty {
+            width: 100px;
+        }
+    }
+
+    .problem-list {
+        background: #282828; // Container bg if needed, or transparent
+        border-radius: 8px; // Or remove if row-based
+
+        .problem-row {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            border-bottom: 1px solid #3e3e3e;
+            cursor: pointer;
+            transition: background 0.2s;
+
+            &:hover {
+                background: #3e3e3e;
+            }
+
+            &.row-even {
+                background: #282828;
+            }
+
+            &.row-odd {
+                background: #2a2a2a;
+            }
+
+            .col-status {
+                width: 60px;
+                font-size: 1.2rem;
+                display: flex;
+                justify-content: center;
+
+                .status-solved {
+                    color: $color-success;
+                }
+            }
+
+            .col-title {
+                flex: 1;
+                font-weight: 500;
+                color: $color-text-main;
+
+                &:hover {
+                    color: $color-primary;
+                }
+            }
+
+            .col-acceptance {
+                width: 120px;
+                color: $color-text-muted;
+                font-size: 0.9rem;
+            }
+
+            .col-difficulty {
+                width: 100px;
+                font-size: 0.9rem;
+                font-weight: 500;
+
+                &.text-success {
+                    color: #00b8a3;
+                }
+
+                &.text-warning {
+                    color: #ffc01e;
+                }
+
+                &.text-danger {
+                    color: #ff375f;
+                }
+
+                &.text-muted {
+                    color: $color-text-muted;
+                }
+            }
+        }
+    }
+}
