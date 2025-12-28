@@ -44,8 +44,13 @@ Ensure you have the following installed:
 
 ### 1. Clone the Repository
 ```bash
-git clone <repository_url>
-cd cipher-sql-studio
+# Clone using HTTPS
+git clone https://github.com/vishesh2408/CipherSQLStudio.git
+
+# Or using SSH
+# git clone git@github.com:vishesh2408/CipherSQLStudio.git
+
+cd CipherSQLStudio
 ```
 
 ### 2. Backend Setup
