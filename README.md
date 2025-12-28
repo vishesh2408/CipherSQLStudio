@@ -75,7 +75,7 @@ SEED the database (Required for first run):
 # Populates MongoDB with challenges and sets up initial Postgres tables
 node src/utils/seedData.js
 ```
-*Output should show: "MongoDB Connected", "PostgreSQL Connected", "✅ Database Seeded Successfully"*
+*Output should show: "MongoDB Connected", "PostgreSQL Connected", "Database Seeded Successfully"*
 
 Start the server:
 ```bash
