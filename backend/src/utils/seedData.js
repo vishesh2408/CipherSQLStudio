@@ -12,30 +12,6 @@ const assignments = [
     topic: "Basic SQL",
     question: "Write a query to select all columns from the 'users' table.",
     sampleTables: [
-// ...
-  {
-    title: "Find High Earners",
-    description: "Filter results using the WHERE clause.",
-    difficulty: "Medium",
-    topic: "Aggregation", 
-    question: "Select the name and salary of employees earning more than 50000.",
-    sampleTables: [
-// ...
-  {
-    title: "Customer Orders (JOIN)",
-    description: "Learn how to combine rows from two or more tables based on a related column between them.",
-    difficulty: "Medium",
-    topic: "Joins",
-    question: "Retrieve the order_id, item, amount, and the first_name of the customer who placed the order.",
-    sampleTables: [
-// ...
-  {
-    title: "High Spenders (Subquery)",
-    description: "Use a subquery to filter results based on an aggregate condition.",
-    difficulty: "Hard",
-    topic: "Subqueries",
-    question: "Select the first_name of customers who have spent more than the average amount of all orders.",
-    sampleTables: [
       {
         tableName: "users",
         columns: [
@@ -67,6 +43,7 @@ const assignments = [
     title: "Find High Earners",
     description: "Filter results using the WHERE clause.",
     difficulty: "Medium",
+    topic: "Basic SQL",
     question: "Select the name and salary of employees earning more than 50000.",
     sampleTables: [
       {
@@ -98,9 +75,44 @@ const assignments = [
     stats: { attempts: 0, solved: 0 }
   },
   {
+    title: "Aggegrate Salaries",
+    description: "Calculate the total salary of all employees.",
+    difficulty: "Medium",
+    topic: "Aggregation",
+    question: "Calculate the sum of all salaries from the 'employees' table.",
+    sampleTables: [
+        {
+          tableName: "employees",
+          columns: [
+            { columnName: "id", dataType: "INTEGER" },
+            { columnName: "name", dataType: "TEXT" },
+            { columnName: "salary", dataType: "INTEGER" }
+          ],
+          rows: [
+            { id: 1, name: "Charlie", salary: 45000 },
+            { id: 2, name: "Diana", salary: 60000 },
+            { id: 3, name: "Evan", salary: 55000 }
+          ]
+        }
+      ],
+      expectedOutput: {
+        type: "table",
+        value: [
+          { sum: 160000 }
+        ]
+      },
+      setupSql: `
+        DROP TABLE IF EXISTS employees;
+        CREATE TABLE employees (id SERIAL PRIMARY KEY, name TEXT, salary INTEGER);
+        INSERT INTO employees (name, salary) VALUES ('Charlie', 45000), ('Diana', 60000), ('Evan', 55000);
+      `,
+      stats: { attempts: 0, solved: 0 }
+  },
+  {
     title: "Customer Orders (JOIN)",
     description: "Learn how to combine rows from two or more tables based on a related column between them.",
     difficulty: "Medium",
+    topic: "Joins",
     question: "Retrieve the order_id, item, amount, and the first_name of the customer who placed the order.",
     sampleTables: [
       {

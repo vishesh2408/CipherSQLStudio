@@ -20,34 +20,42 @@ const Login = () => {
     };
 
     return (
-        <div className="page-wrapper">
+        <div className="page-wrapper auth-page">
             <Navbar />
-            <div className="container flex-center" style={{ minHeight: '80vh' }}>
-                <div className="card" style={{ maxWidth: '400px', width: '100%', padding: '2rem' }}>
-                    <h1 style={{ textAlign: 'center', marginBottom: '1.5rem' }}>Login</h1>
-                    {error && <div className="error-message" style={{ marginBottom: '1rem', color: '#ef4444' }}>{error}</div>}
-                    <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            value={formData.email}
-                            onChange={e => setFormData({ ...formData, email: e.target.value })}
-                            required
-                            style={{ padding: '0.75rem', borderRadius: '6px', border: '1px solid #334155', background: '#0f172a', color: 'white' }}
-                        />
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            value={formData.password}
-                            onChange={e => setFormData({ ...formData, password: e.target.value })}
-                            required
-                            style={{ padding: '0.75rem', borderRadius: '6px', border: '1px solid #334155', background: '#0f172a', color: 'white' }}
-                        />
-                        <button type="submit" className="btn-primary" style={{ marginTop: '1rem' }}>Login</button>
+            <div className="auth-container">
+                <div className="auth-card">
+                    <h1>Login</h1>
+                    {error && <div className="error-message">{error}</div>}
+
+                    <form onSubmit={handleSubmit} className="auth-form">
+                        <div className="form-group">
+                            <input
+                                type="email"
+                                className="auth-input"
+                                placeholder="Email"
+                                value={formData.email}
+                                onChange={e => setFormData({ ...formData, email: e.target.value })}
+                                required
+                            />
+                        </div>
+                        <div className="form-group">
+                            <input
+                                type="password"
+                                className="auth-input"
+                                placeholder="Password"
+                                value={formData.password}
+                                onChange={e => setFormData({ ...formData, password: e.target.value })}
+                                required
+                            />
+                        </div>
+                        <button type="submit" className="auth-btn">
+                            Login
+                        </button>
                     </form>
-                    <p style={{ marginTop: '1rem', textAlign: 'center', color: '#94a3b8' }}>
-                        Don't have an account? <Link to="/signup" style={{ color: '#3b82f6' }}>Sign Up</Link>
-                    </p>
+
+                    <div className="auth-footer">
+                        Don't have an account? <Link to="/signup">Sign Up</Link>
+                    </div>
                 </div>
             </div>
         </div>

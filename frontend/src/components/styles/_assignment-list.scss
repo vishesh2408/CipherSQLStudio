@@ -12,11 +12,12 @@
     max-width: 1400px;
     margin: 0 auto;
     display: flex;
+    flex-direction: column; // Mobile default
     gap: $spacing-lg;
     padding: $spacing-lg;
 
-    @include mobile {
-        flex-direction: column;
+    @include desktop {
+        flex-direction: row; // Desktop enhancement
     }
 }
 

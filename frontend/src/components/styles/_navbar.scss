@@ -6,7 +6,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem $spacing-lg;
+    padding: 1rem $spacing-md; // Mobile padding
     background: rgba($color-surface, 0.8);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid $color-border;
@@ -14,11 +14,20 @@
     top: 0;
     z-index: 100;
 
+    @include desktop {
+        padding: 1rem $spacing-lg; // Desktop padding
+    }
+
     .nav-logo {
-        font-size: 1.25rem;
+        font-size: 1.1rem; // Mobile font size
         font-weight: 700;
         color: $color-primary;
         letter-spacing: -0.02em;
+        text-decoration: none; // Added
+
+        @include tablet {
+            font-size: 1.25rem;
+        }
 
         &:hover {
             color: color.adjust($color-primary, $lightness: 10%);
@@ -26,8 +35,13 @@
     }
 
     .nav-links {
-        display: flex;
-        gap: $spacing-md;
+        display: none; // Hidden on mobile by default
+        gap: $spacing-sm;
+
+        @include tablet {
+            display: flex; // Show on tablet+
+            gap: $spacing-md;
+        }
 
         a {
             font-size: 0.95rem;
@@ -36,6 +50,7 @@
             padding: 0.5rem;
             border-radius: 6px;
             transition: all 0.2s;
+            text-decoration: none; // Added
 
             &:hover,
             &.active {
@@ -48,5 +63,11 @@
                 cursor: not-allowed;
             }
         }
+    }
+
+    .nav-actions {
+        display: flex;
+        align-items: center;
+        gap: $spacing-sm;
     }
 }

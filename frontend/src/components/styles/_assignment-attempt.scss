@@ -3,23 +3,39 @@
 @use 'mixins' as *;
 
 .assignment-attempt {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     background-color: $color-bg;
 
+    @include desktop {
+        height: 100vh;
+        overflow: hidden;
+    }
+
     .attempt-subheader {
         flex-shrink: 0;
-        padding: $spacing-sm $spacing-lg;
+        padding: $spacing-sm $spacing-md;
         background: $color-surface;
         border-bottom: 1px solid $color-border;
         display: flex;
         justify-content: space-between;
         align-items: center;
+        flex-wrap: wrap;
+        gap: $spacing-sm;
+
+        @include tablet {
+            padding: $spacing-sm $spacing-lg;
+            flex-wrap: nowrap;
+        }
 
         h1 {
-            font-size: 1.25rem;
+            font-size: 1.1rem;
             font-weight: 600;
+
+            @include tablet {
+                font-size: 1.25rem;
+            }
         }
 
         .actions {
@@ -55,11 +71,11 @@
     .workspace {
         flex-grow: 1;
         display: flex;
-        overflow: hidden;
         flex-direction: column;
 
         @include desktop {
             flex-direction: row;
+            overflow: hidden;
         }
     }
 

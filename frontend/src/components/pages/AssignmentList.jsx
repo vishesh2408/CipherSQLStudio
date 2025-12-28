@@ -10,6 +10,7 @@ const AssignmentList = () => {
     const [progressMap, setProgressMap] = useState({});
     const [loading, setLoading] = useState(true);
     const [searchQuery, setSearchQuery] = useState('');
+    const [selectedTopic, setSelectedTopic] = useState('All');
     const { user } = useContext(AuthContext);
     const navigate = useNavigate();
 
@@ -59,12 +60,42 @@ const AssignmentList = () => {
                 {/* Main Content */}
                 <main className="problem-list-content">
                     <div className="topic-filters">
-                        <button className="filter-chip active">All</button>
-                        <button className="filter-chip">Basic SQL</button>
-                        <button className="filter-chip">Joins</button>
-                        <button className="filter-chip">Aggregation</button>
-                        <button className="filter-chip">Subqueries</button>
-                        <button className="filter-chip">Advanced</button>
+                        <button
+                            className={`filter-chip ${selectedTopic === 'All' ? 'active' : ''}`}
+                            onClick={() => setSelectedTopic('All')}
+                        >
+                            All
+                        </button>
+                        <button
+                            className={`filter-chip ${selectedTopic === 'Basic SQL' ? 'active' : ''}`}
+                            onClick={() => setSelectedTopic('Basic SQL')}
+                        >
+                            Basic SQL
+                        </button>
+                        <button
+                            className={`filter-chip ${selectedTopic === 'Joins' ? 'active' : ''}`}
+                            onClick={() => setSelectedTopic('Joins')}
+                        >
+                            Joins
+                        </button>
+                        <button
+                            className={`filter-chip ${selectedTopic === 'Aggregation' ? 'active' : ''}`}
+                            onClick={() => setSelectedTopic('Aggregation')}
+                        >
+                            Aggregation
+                        </button>
+                        <button
+                            className={`filter-chip ${selectedTopic === 'Subqueries' ? 'active' : ''}`}
+                            onClick={() => setSelectedTopic('Subqueries')}
+                        >
+                            Subqueries
+                        </button>
+                        <button
+                            className={`filter-chip ${selectedTopic === 'Advanced' ? 'active' : ''}`}
+                            onClick={() => setSelectedTopic('Advanced')}
+                        >
+                            Advanced
+                        </button>
                     </div>
 
                     <div className="search-bar-container">
@@ -88,24 +119,33 @@ const AssignmentList = () => {
                         <div className="loading-state">Loading...</div>
                     ) : (
                         <div className="problem-list">
-                            {assignments.filter(assignment => {
-                                if (!searchQuery) return true;
-                                const query = searchQuery.toLowerCase();
-                                const titleMatch = assignment.title.toLowerCase().includes(query);
-                                // Find original index to verify number matching provided we knew strictly
-                                // For now, we'll map first then filter? Or finding index in original array.
-                                // simpler: just filter. But to match "1" to "1. Title", we need the index.
-                                // Let's filter in the map or create a mapped array first.
-                                return true;
-                            })
-                                .map((assignment, index) => ({ ...assignment, originalIndex: index + 1 })) // Preserve number
-                                .filter(item => {
-                                    if (!searchQuery) return true;
-                                    const query = searchQuery.toLowerCase();
-                                    return item.title.toLowerCase().includes(query) ||
-                                        item.originalIndex.toString().includes(query);
-                                })
-                                .map((assignment) => {
+                            {(() => {
+                                // Prepare data: Attach original index to all assignments
+                                const processedAssignments = assignments.map((a, i) => ({ ...a, originalIndex: i + 1 }));
+
+                                // Apply filters
+                                const filtered = processedAssignments.filter(item => {
+                                    // Topic Filter
+                                    if (selectedTopic !== 'All' && item.topic !== selectedTopic) return false;
+
+                                    // Search Filter
+                                    if (searchQuery) {
+                                        const query = searchQuery.toLowerCase();
+                                        return item.title.toLowerCase().includes(query) ||
+                                            item.originalIndex.toString().includes(query);
+                                    }
+                                    return true;
+                                });
+
+                                if (filtered.length === 0) {
+                                    // Check if it's because of the topic filter specifically
+                                    if (selectedTopic !== 'All' && assignments.filter(a => a.topic === selectedTopic).length === 0) {
+                                        return <div className="empty-state">Coming Soon! (No questions in this category yet)</div>;
+                                    }
+                                    return <div className="empty-state">No assignments found matching your criteria.</div>;
+                                }
+
+                                return filtered.map((assignment) => {
                                     const isSolved = progressMap[assignment._id];
                                     return (
                                         <div
@@ -136,8 +176,8 @@ const AssignmentList = () => {
                                             </div>
                                         </div>
                                     );
-                                })}
-                            {assignments.length === 0 && <div className="empty-state">No assignments found.</div>}
+                                });
+                            })()}
                         </div>
                     )}
                 </main>
